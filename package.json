@@ -1,0 +1,22 @@
+{
+  "name": "listener",
+  "version": "1.0.0",
+  "description": "- installation done",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/node101-io/node-listener.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/node101-io/node-listener/issues"
+  },
+  "homepage": "https://github.com/node101-io/node-listener#readme",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
