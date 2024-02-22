@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/node101-io/node-listener#readme",
   "dependencies": {
+    "node-fetch": "^2.7.0",
     "ws": "^8.16.0"
   }
 }
