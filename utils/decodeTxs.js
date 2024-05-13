@@ -1,5 +1,5 @@
 import { decodeTxRaw, Registry } from '@cosmjs/proto-signing';
-import { StargateClient, defaultRegistryTypes } from '@cosmjs/stargate';
+import { defaultRegistryTypes } from '@cosmjs/stargate';
 import { toHex } from '@cosmjs/encoding';
 import { sha256 } from '@cosmjs/crypto';
 // import { MsgData, TxMsgData } from "cosmjs-types/cosmos/base/abci/v1beta1/abci.js";
@@ -25,28 +25,23 @@ export default txs => {
 
     const tx = decodeTxRaw(bufferTx);
 
-    const newMessages = [];
+    const oldMessages = tx.body.messages;
 
-    tx.body.messages.forEach(message => {
-      console.log(message);
+    tx.body.messages = [];
+
+    oldMessages.forEach(message => {
       if (ACCEPTED_MESSAGE_TYPES.includes(message.typeUrl))
-        newMessages.push({
+        tx.body.messages.push({
           typeUrl: message.typeUrl,
           value: registry.decode(message),
         });
     });
 
-    if (newMessages.length > 0) {
-      tx.body.txHash = toHex(sha256(bufferTx));
-      tx.body.messages = newMessages;
-      decodedTxs.push(tx);
+    if (tx.body.messages.length > 0) {
+      tx.body.hash = toHex(sha256(bufferTx));
+      decodedTxs.push(tx.body);
     };
   });
 
-  return JSON.stringify(decodedTxs, null, 2);
+  return decodedTxs;
 };
-
-// const client = await StargateClient.connect('https://cosmos-rpc.onivalidator.com/');
-
-// const txs = await client.searchTx("transfer.sender='cosmos1x2v9u3x0ut6krpldpdv5pdke2a5ps38d36yehj'");
-// console.log(txs);

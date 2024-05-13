@@ -22,7 +22,10 @@
     "@cosmjs/encoding": "^0.32.3",
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
+    "async": "^3.2.5",
     "cosmjs-types": "^0.9.0",
+    "croner": "^8.0.2",
+    "dockerode": "^4.0.2",
     "ws": "^8.16.0"
   },
   "devDependencies": {
@@ -30,6 +33,7 @@
   },
   "nodemonConfig": {
     "ignore": [
+      "notifications.json",
       "txs.json"
     ]
   }

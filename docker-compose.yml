@@ -6,6 +6,7 @@ services:
       - '3000:3000'
     volumes:
       - ./txs.json:/app/txs.json
+      - ./notifications.json:/app/notifications.json
     restart: always
     environment:
       - NODE_ENV=production
