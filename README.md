@@ -1,10 +1,5 @@
-# node-listener
+# server-listener
 
-- installation done
-
-- new block
-
-- tx result (wont listen)
-
-- 
-
+1. node sync oldu
+2. node installation tamamlandı
+5. tx result?
