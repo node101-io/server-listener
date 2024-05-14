@@ -1,7 +1,12 @@
-import notifyWhenNewNodeInstalled from './utils/notifyWhenNewNodeInstalled.js';
-import notifyWhenSyncStatusChange from './utils/notifyWhenSyncStatusChange.js';
-import writeLatestBlockInfoToFile from './utils/writeLatestBlockInfoToFile.js';
+const notifyWhenNewNodeInstalled = require('./utils/notifyWhenNewNodeInstalled');
+const notifyWhenSyncStatusChange = require('./utils/notifyWhenSyncStatusChange');
+const writeLatestBlockInfoToFile = require('./utils/writeLatestBlockInfoToFile');
+const makeLogger = require('./utils/logger');
+
+const logger = makeLogger(__filename);
 
 notifyWhenNewNodeInstalled();
 notifyWhenSyncStatusChange();
 writeLatestBlockInfoToFile();
+
+logger.activity('App started');

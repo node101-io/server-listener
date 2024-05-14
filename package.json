@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "docker:run": "docker compose up -d"
   },
@@ -34,7 +33,9 @@
   "nodemonConfig": {
     "ignore": [
       "notifications.json",
-      "txs.json"
+      "txs.json",
+      "log.txt",
+      "error.txt"
     ]
   }
 }

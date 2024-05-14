@@ -131,3 +131,5 @@ dist
 
 txs.json
 notifications.json
+log.txt
+error.txt

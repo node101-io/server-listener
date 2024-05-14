@@ -7,6 +7,8 @@ services:
     volumes:
       - ./txs.json:/app/txs.json
       - ./notifications.json:/app/notifications.json
+      - ./log.txt:/app/log.txt
+      - ./error.txt:/app/error.txt
     restart: always
     environment:
       - NODE_ENV=production

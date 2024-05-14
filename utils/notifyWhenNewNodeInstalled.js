@@ -1,43 +1,59 @@
-import Dockerode from 'dockerode';
-import Cron from 'croner';
+const Dockerode = require('dockerode');
+const Cron = require('croner');
 
-import writeNotificationToFile from './writeNotificationToFile.js';
+const makeLogger = require('./logger');
+const writeNotificationToFile = require('./writeNotificationToFile');
 
-let lastContainers;
+const RECONNECT_ATTEMPT_INTERVAL = 10 * 1000;
 
-export default () => {
+let isRepeatingError = false;
+
+const logger = makeLogger(__filename);
+
+const retryConnectingDocker = () => {
+  logger.error('Docker not found, retrying...', { is_repeating: isRepeatingError });
+  isRepeatingError = true;
+  return setTimeout(notifyWhenNewNodeInstalled, RECONNECT_ATTEMPT_INTERVAL);
+};
+
+const notifyWhenNewNodeInstalled = () => {
   const docker = new Dockerode();
 
   docker.listContainers((err, containers) => {
+    if (err && err.code != 'ENOENT')
+      return logger.error(err);
+
     if (err)
-      return console.error(err);
+      return retryConnectingDocker();
 
-    lastContainers = containers.map(container => container.Id);
-  });
+    isRepeatingError = false;
 
-  Cron('*/5 * * * * *', () => {
-    docker.listContainers((err, containers) => {
-      if (err)
-        return console.error(err);
+    let lastContainers = containers.map(container => container.Id);
 
-      const newContainers = containers.filter(container => !lastContainers.includes(container.Id) && container.Image.includes('klein-node'));
+    Cron('*/5 * * * * *', () => {
+      docker.listContainers((err, containers) => {
+        if (err && err.code != 'ENOENT')
+          return logger.error(err);
 
-      if (newContainers.length > 0) {
+        if (err)
+          return retryConnectingDocker();
+
+        isRepeatingError = false;
+
+        const newContainers = containers.filter(container => !lastContainers.includes(container.Id) && container.Image.includes('klein-node'));
+
+        lastContainers = containers.map(container => container.Id);
+
+        if (newContainers.length == 0)
+          return;
+
         writeNotificationToFile({
-          title: 'Node installation done!',
-          message: 'Go on and explore your node.',
-          publish_date: Date.now(),
-          translations: {
-            tr: {
-              title: 'Node kurulumu tamamlandı!',
-              message: 'Şimdi node\'unuzu keşfedin.'
-            }
-          }
-        }, err => {
-          if (err)
-            console.error(err);
+          title: 'notification-node-installation-done-title',
+          message: 'notification-node-installation-done-message'
         });
-      };
+      });
     });
   });
 };
+
+module.exports = notifyWhenNewNodeInstalled;

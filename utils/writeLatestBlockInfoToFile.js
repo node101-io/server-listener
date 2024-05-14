@@ -1,17 +1,21 @@
-import fs from 'fs';
-import WebSocket from 'ws';
+const fs = require('fs');
+const WebSocket = require('ws');
 
-import decodeTxs from './decodeTxs.js';
+const decodeTxs = require('./decodeTxs');
+const json = require('./json');
+const makeLogger = require('./logger');
+
+const logger = makeLogger(__filename);
 
 const RECONNECT_ATTEMPT_INTERVAL = 5 * 1000;
 const WEBSOCKET_URL = 'https://cosmos-rpc.onivalidator.com/websocket';
 
-const startGettingLatestBlock = () => {
+const writeLatestBlockInfoToFile = () => {
   const webSocket = new WebSocket(WEBSOCKET_URL);
 
   webSocket
     .on('open', _ => {
-      webSocket.send(JSON.stringify({
+      webSocket.send(json.stringify({
         jsonrpc: '2.0',
         method: 'subscribe',
         id: 0,
@@ -21,34 +25,40 @@ const startGettingLatestBlock = () => {
       }));
     })
     .on('message', message => {
-      message = JSON.parse(message);
+      const data = json.jsonify(message)?.result?.data;
 
-      if (!message.result.data || message.result.data.type != 'tendermint/event/NewBlock')
+      if (data?.type != 'tendermint/event/NewBlock')
         return;
 
-      const txs = message.result.data.value.block.data.txs;
+      const txs = data?.value?.block?.data?.txs;
+      const height = data?.value?.block?.header?.height;
 
-      fs.writeFile('txs.json', JSON.stringify({
-        height: message.result.data.value.block.header.height,
-        txs: decodeTxs(txs)
-      }, null, 2), err => {
-        if (err)
-          return console.error(err);
+      if (!txs || !height)
+        return;
 
-        console.log('Decoded transactions saved to txs.json');
-      })
+      decodeTxs(txs, (err, decodedTxs) => {
+        fs.writeFile('txs.json', json.stringify({
+          height: height,
+          txs: decodedTxs
+        }), err => {
+          if (err)
+            return logger.error(err);
+
+          logger.activity('Latest block info saved to txs.json', { is_repeating: true });
+        });
+      });
     })
     .on('error', err => {
-      console.error(err);
+      logger.error(err, { is_repeating: true });
       webSocket.close();
     })
     .on('unexpected-response', (req, res) => {
-      console.error('Unexpected response, trying to reconnect...');
+      logger.error('Unexpected response', { is_repeating: true });
       webSocket.close();
     })
     .on('close', _ => {
-      setTimeout(startGettingLatestBlock, RECONNECT_ATTEMPT_INTERVAL);
+      setTimeout(writeLatestBlockInfoToFile, RECONNECT_ATTEMPT_INTERVAL);
     });
 };
 
-export default startGettingLatestBlock;
+module.exports = writeLatestBlockInfoToFile;
