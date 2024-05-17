@@ -2,8 +2,8 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
-const ERROR_FILE_PATH = path.join(__dirname, '../error.txt');
-const LOG_FILE_PATH = path.join(__dirname, '../log.txt');
+const ERROR_FILE_PATH = path.join(__dirname, '../data/error.txt');
+const LOG_FILE_PATH = path.join(__dirname, '../data/log.txt');
 const MAX_LOGS = 20;
 
 const logQueue = async.queue((data, callback) => {

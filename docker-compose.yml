@@ -4,11 +4,7 @@ services:
     ports:
       - '10101:10101'
     volumes:
-      - ./package.json:/app/package.json
-      - ./txs.json:/app/txs.json
-      - ./notifications.json:/app/notifications.json
-      - ./log.txt:/app/log.txt
-      - ./error.txt:/app/error.txt
+      - ./data:/app/data
     restart: always
     environment:
       - NODE_ENV=production

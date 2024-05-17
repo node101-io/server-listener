@@ -9,6 +9,7 @@ const logger = makeLogger(__filename);
 
 const RECONNECT_ATTEMPT_INTERVAL = 5 * 1000;
 const WEBSOCKET_URL = 'https://cosmos-rpc.onivalidator.com/websocket';
+const TXS_FILE_PATH = './data/txs.json';
 
 const writeLatestBlockInfoToFile = () => {
   const webSocket = new WebSocket(WEBSOCKET_URL);
@@ -37,7 +38,7 @@ const writeLatestBlockInfoToFile = () => {
         return;
 
       decodeTxs(txs, (err, decodedTxs) => {
-        fs.writeFile('txs.json', json.stringify({
+        fs.writeFile(TXS_FILE_PATH, json.stringify({
           height: height,
           txs: decodedTxs
         }), err => {

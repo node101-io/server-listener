@@ -1,10 +1,5 @@
 FROM node:20
 
-RUN touch txs.json
-RUN touch notifications.json
-RUN touch log.txt
-RUN touch error.txt
-
 WORKDIR /app
 
 COPY package*.json ./
@@ -12,5 +7,8 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+
+RUN touch /app/error.txt /app/log.txt /app/notifications.json /app/txs.json
+RUN chmod 666 /app/error.txt /app/log.txt /app/notifications.json /app/txs.json
 
 CMD ["npm", "start"]

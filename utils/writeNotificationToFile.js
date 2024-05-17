@@ -7,6 +7,7 @@ const makeLogger = require('./logger');
 const logger = makeLogger(__filename);
 
 const MAX_NOTIFICATIONS = 10;
+const NOTIFICATION_FILE_PATH = './data/notifications.json';
 
 const notificationQueue = async.queue((data, callback) => {
   writeNotificationToFile(data, (err, result) => {
@@ -27,7 +28,7 @@ const writeNotificationToFile = data => {
   if (!data.message && typeof data.message != 'string')
     return logger.error('bad_request');
 
-  fs.readFile('notifications.json', (err, content) => {
+  fs.readFile(NOTIFICATION_FILE_PATH, (err, content) => {
     if (err)
       return logger.error(err);
 
@@ -39,7 +40,7 @@ const writeNotificationToFile = data => {
     while (notifications.length > MAX_NOTIFICATIONS)
       notifications.shift();
 
-    fs.writeFile('notifications.json', json.stringify(notifications), err => {
+    fs.writeFile(NOTIFICATION_FILE_PATH, json.stringify(notifications), err => {
       if (err)
         return logger.error(err);
 
