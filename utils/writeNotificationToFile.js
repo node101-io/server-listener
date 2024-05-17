@@ -28,25 +28,33 @@ const writeNotificationToFile = data => {
   if (!data.message && typeof data.message != 'string')
     return logger.error('bad_request');
 
-  fs.readFile(NOTIFICATION_FILE_PATH, (err, content) => {
-    if (err)
-      return logger.error(err);
-
-    const notifications = json.jsonify(content) || [];
-
-    data.publish_date = Date.now();
-    notifications.push(data);
-
-    while (notifications.length > MAX_NOTIFICATIONS)
-      notifications.shift();
-
-    fs.writeFile(NOTIFICATION_FILE_PATH, json.stringify(notifications), err => {
+  if (!fs.existsSync(NOTIFICATION_FILE_PATH))
+    fs.writeFile(NOTIFICATION_FILE_PATH, '', err => {
       if (err)
         return logger.error(err);
 
-      return logger.activity('Notification saved to notifications.json');
+      writeNotificationToFile(data);
     });
-  });
+  else
+    fs.readFile(NOTIFICATION_FILE_PATH, (err, content) => {
+      if (err)
+        return logger.error(err);
+
+      const notifications = json.jsonify(content) || [];
+
+      data.publish_date = Date.now();
+      notifications.push(data);
+
+      while (notifications.length > MAX_NOTIFICATIONS)
+        notifications.shift();
+
+      fs.writeFile(NOTIFICATION_FILE_PATH, json.stringify(notifications), err => {
+        if (err)
+          return logger.error(err);
+
+        return logger.activity('Notification saved to notifications.json');
+      });
+    });
 };
 
 module.exports = data => {
