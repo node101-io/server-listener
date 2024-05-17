@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "docker:run": "docker compose up -d",
     "docker:remove": "docker compose down --remove-orphans --rmi all"
   },
