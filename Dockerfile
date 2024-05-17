@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install --frozen-lockfile
+RUN npm install --frozen-lockfile
 
 COPY . .
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
