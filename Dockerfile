@@ -3,10 +3,10 @@ FROM node:20
 WORKDIR /app
 
 COPY package.json ./
-COPY txs.json ./
-COPY notifications.json ./
-COPY log.txt ./
-COPY error.txt ./
+RUN touch txs.json
+RUN touch notifications.json
+RUN touch log.txt
+RUN touch error.txt
 
 RUN npm ci
 
