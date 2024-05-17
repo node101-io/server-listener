@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "docker:run": "docker compose up -d"
+    "docker:run": "docker compose up -d",
+    "docker:remove": "docker compose down --remove-orphans --rmi all"
   },
   "author": "node101",
   "license": "ISC",
