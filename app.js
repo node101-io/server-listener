@@ -21,7 +21,7 @@ app.use('/stats', statsRoute);
 
 const logger = makeLogger(__filename);
 
-server.listen(3000, () => {
+server.listen(10101, () => {
   notifyWhenNewNodeInstalled();
   notifyWhenSyncStatusChange();
   writeLatestBlockInfoToFile();

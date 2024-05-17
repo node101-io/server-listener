@@ -2,7 +2,7 @@ services:
   app:
     build: .
     ports:
-      - '3000:3000'
+      - '10101:10101'
     volumes:
       - ./txs.json:/app/txs.json
       - ./notifications.json:/app/notifications.json
