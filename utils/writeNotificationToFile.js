@@ -18,6 +18,14 @@ const notificationQueue = async.queue((data, callback) => {
   });
 }, 1);
 
+if (!fs.existsSync(NOTIFICATION_FILE_PATH))
+  fs.writeFile(NOTIFICATION_FILE_PATH, '', err => {
+    if (err)
+      return logger.error(err);
+
+    logger.activity('notifications.json created');
+  });
+
 const writeNotificationToFile = data => {
   if (!data || typeof data != 'object')
     return logger.error('bad_request');
@@ -28,33 +36,26 @@ const writeNotificationToFile = data => {
   if (!data.message && typeof data.message != 'string')
     return logger.error('bad_request');
 
-  if (!fs.existsSync(NOTIFICATION_FILE_PATH))
-    fs.writeFile(NOTIFICATION_FILE_PATH, '', err => {
+
+  fs.readFile(NOTIFICATION_FILE_PATH, (err, content) => {
+    if (err)
+      return logger.error(err);
+
+    const notifications = json.jsonify(content) || [];
+
+    data.publish_date = Date.now();
+    notifications.push(data);
+
+    while (notifications.length > MAX_NOTIFICATIONS)
+      notifications.shift();
+
+    fs.writeFile(NOTIFICATION_FILE_PATH, json.stringify(notifications), err => {
       if (err)
         return logger.error(err);
 
-      writeNotificationToFile(data);
+      return logger.activity('Notification saved to notifications.json');
     });
-  else
-    fs.readFile(NOTIFICATION_FILE_PATH, (err, content) => {
-      if (err)
-        return logger.error(err);
-
-      const notifications = json.jsonify(content) || [];
-
-      data.publish_date = Date.now();
-      notifications.push(data);
-
-      while (notifications.length > MAX_NOTIFICATIONS)
-        notifications.shift();
-
-      fs.writeFile(NOTIFICATION_FILE_PATH, json.stringify(notifications), err => {
-        if (err)
-          return logger.error(err);
-
-        return logger.activity('Notification saved to notifications.json');
-      });
-    });
+  });
 };
 
 module.exports = data => {
