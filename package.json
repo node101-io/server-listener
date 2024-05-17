@@ -6,16 +6,8 @@
   "scripts": {
     "docker:run": "docker compose up -d"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://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@github.com/node101-io/server-listener.git"
-  },
-  "author": "",
+  "author": "node101",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/node101-io/server-listener/issues"
-  },
-  "homepage": "https://github.com/node101-io/server-listener#readme",
   "dependencies": {
     "@cosmjs/proto-signing": "^0.32.3",
     "@cosmjs/stargate": "^0.32.3",
