@@ -11,6 +11,14 @@ const RECONNECT_ATTEMPT_INTERVAL = 5 * 1000;
 const WEBSOCKET_URL = 'https://cosmos-rpc.onivalidator.com/websocket';
 const TXS_FILE_PATH = './data/txs.json';
 
+if (!fs.existsSync(TXS_FILE_PATH))
+  fs.writeFile(TXS_FILE_PATH, '', err => {
+    if (err)
+      return logger.error(err);
+
+    logger.activity('txs.json created');
+  });
+
 const writeLatestBlockInfoToFile = () => {
   const webSocket = new WebSocket(WEBSOCKET_URL);
 
