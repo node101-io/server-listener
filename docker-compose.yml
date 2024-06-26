@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    container_name: klein-server-listener
     ports:
       - '10101:10101'
     volumes:
