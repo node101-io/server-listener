@@ -6,6 +6,7 @@ const makeLogger = require('./utils/logger');
 const notifyWhenNewNodeInstalled = require('./utils/notifyWhenNewNodeInstalled');
 const notifyWhenSyncStatusChange = require('./utils/notifyWhenSyncStatusChange');
 const writeLatestBlockInfoToFile = require('./utils/writeLatestBlockInfoToFile');
+const keepPreUpgradeScriptUpToDate = require('./utils/keepPreUpgradeScriptUpToDate');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +26,7 @@ server.listen(10101, () => {
   notifyWhenNewNodeInstalled();
   notifyWhenSyncStatusChange();
   writeLatestBlockInfoToFile();
+  keepPreUpgradeScriptUpToDate();
 
   logger.activity('App started');
 });
