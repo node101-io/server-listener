@@ -9,7 +9,7 @@ const PROJECT_ROUTE_FILE_PATH = '../data/project-route.txt';
 const PRE_UPGRADE_SCRIPT_FILE_PATH = '/var/lib/docker/volumes/klein-node_klein-node-volume/_data/cosmovisor/pre-upgrade.sh';
 
 module.exports = () => {
-  Cron('0 * * * *', () => {
+  Cron('*/5 * * * *', () => {
     fs.access(PROJECT_ROUTE_FILE_PATH, fs.constants.F_OK, err => {
       if (err) return;
 
