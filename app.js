@@ -11,14 +11,16 @@ const keepPreUpgradeScriptUpToDate = require('./utils/keepPreUpgradeScriptUpToDa
 const app = express();
 const server = http.createServer(app);
 
-const statusRoute = require('./routes/status');
-const statsRoute = require('./routes/stats');
+const statusRoute = require('./routes/statusRoute');
+const statsRoute = require('./routes/statsRoute');
+const versionRoute = require('./routes/versionRoute');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/status', statusRoute);
 app.use('/stats', statsRoute);
+app.use('/version', versionRoute);
 
 const logger = makeLogger(__filename);
 
