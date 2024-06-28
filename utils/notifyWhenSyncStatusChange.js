@@ -5,7 +5,7 @@ const writeNotificationToFile = require('./writeNotificationToFile');
 
 const logger = makeLogger(__filename);
 
-const NODE_STATUS_URL = 'https://cosmos-rpc.onivalidator.com/status';
+const NODE_STATUS_URL = 'http://localhost:26657/status';
 
 let latestCatchingUpStatus = false;
 

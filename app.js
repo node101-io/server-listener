@@ -25,10 +25,10 @@ app.use('/version', versionRoute);
 const logger = makeLogger(__filename);
 
 server.listen(10101, () => {
-  notifyWhenNewNodeInstalled();
   notifyWhenSyncStatusChange();
   writeLatestBlockInfoToFile();
-  keepPreUpgradeScriptUpToDate();
+  // keepPreUpgradeScriptUpToDate();
+  // notifyWhenNewNodeInstalled();
 
   logger.activity('App started');
 });

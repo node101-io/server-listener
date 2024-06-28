@@ -18,7 +18,10 @@ const logQueue = async.queue((data, callback) => {
 const incrementLogRepeatCount = log => {
   const logParts = log.split(' ');
 
-  const count = Number(logParts[0].replace('[', '').replace(']', '')) + 1;
+  let count = Number(logParts[0].replace('[', '').replace(']', ''));
+
+  if (count < 10000)
+    count++;
 
   return `[${count}] ${logParts[1].split('-----')[0]}-----${new Date().toISOString() } -> ${logParts.slice(3).join(' ')}`;
 };

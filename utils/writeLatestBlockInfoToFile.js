@@ -8,7 +8,7 @@ const makeLogger = require('./logger');
 const logger = makeLogger(__filename);
 
 const RECONNECT_ATTEMPT_INTERVAL = 5 * 1000;
-const WEBSOCKET_URL = 'https://cosmos-rpc.onivalidator.com/websocket';
+const WEBSOCKET_URL = 'http://localhost:26657/websocket';
 const TXS_FILE_PATH = './data/txs.json';
 
 if (!fs.existsSync(TXS_FILE_PATH))
