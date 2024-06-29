@@ -10,9 +10,10 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-klein-node-volume:
-  driver: local
-  driver_opts:
-    o: bind
-    type: none
-    device: $HOME/klein-node-volume
+volumes:
+  klein-node-volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/klein-node-volume
