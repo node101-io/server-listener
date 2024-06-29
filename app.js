@@ -27,7 +27,7 @@ const logger = makeLogger(__filename);
 server.listen(10101, () => {
   notifyWhenSyncStatusChange();
   writeLatestBlockInfoToFile();
-  // keepPreUpgradeScriptUpToDate();
+  keepPreUpgradeScriptUpToDate();
   // notifyWhenNewNodeInstalled();
 
   logger.activity('App started');

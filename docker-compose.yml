@@ -6,6 +6,13 @@ services:
       - '10101:10101'
     volumes:
       - ./data:/app/data
+      - klein-node-volume:/app/klein-node-volume
     restart: always
     environment:
       - NODE_ENV=production
+klein-node-volume:
+  driver: local
+  driver_opts:
+    o: bind
+    type: none
+    device: $HOME/klein-node-volume

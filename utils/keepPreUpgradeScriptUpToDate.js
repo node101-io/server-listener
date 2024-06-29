@@ -6,7 +6,7 @@ const makeLogger = require('./logger');
 const logger = makeLogger(__filename);
 
 const PROJECT_ROUTE_FILE_PATH = '../data/project-route.txt';
-const PRE_UPGRADE_SCRIPT_FILE_PATH = '/var/lib/docker/volumes/klein-node_klein-node-volume/_data/cosmovisor/pre-upgrade.sh';
+const PRE_UPGRADE_SCRIPT_FILE_PATH = '/app/klein-node-volume/cosmovisor/pre-upgrade.sh';
 
 module.exports = () => {
   Cron('*/5 * * * *', () => {
