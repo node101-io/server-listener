@@ -22,6 +22,8 @@ module.exports = () => {
             fs.writeFile(PRE_UPGRADE_SCRIPT_FILE_PATH, pre_upgrade_script, err => {
               if (err)
                 return logger.error(err);
+
+              logger.activity('pre-upgrade script updated');
             });
           })
           .catch(err => {
