@@ -3,10 +3,10 @@ const express = require('express');
 const http = require('http');
 
 const makeLogger = require('./utils/logger');
-const notifyWhenNewNodeInstalled = require('./utils/notifyWhenNewNodeInstalled');
-const notifyWhenSyncStatusChange = require('./utils/notifyWhenSyncStatusChange');
-const writeLatestBlockInfoToFile = require('./utils/writeLatestBlockInfoToFile');
 const keepPreUpgradeScriptUpToDate = require('./utils/keepPreUpgradeScriptUpToDate');
+// const notifyWhenNewNodeInstalled = require('./utils/notifyWhenNewNodeInstalled');
+// const notifyWhenSyncStatusChange = require('./utils/notifyWhenSyncStatusChange');
+// const writeLatestBlockInfoToFile = require('./utils/writeLatestBlockInfoToFile');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,9 +25,9 @@ app.use('/version', versionRoute);
 const logger = makeLogger(__filename);
 
 server.listen(10101, () => {
-  notifyWhenSyncStatusChange();
-  writeLatestBlockInfoToFile();
   keepPreUpgradeScriptUpToDate();
+  // notifyWhenSyncStatusChange();
+  // writeLatestBlockInfoToFile();
   // notifyWhenNewNodeInstalled();
 
   logger.activity('App started');
