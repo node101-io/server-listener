@@ -18,6 +18,7 @@ module.exports = () => {
           return logger.error(err);
 
         fetch(`https://raw.githubusercontent.com/node101-io/klein-scripts-v1/main/${klein_node_route.trim()}/pre-upgrade.sh`)
+          .then(pre_upgrade_script => pre_upgrade_script.text())
           .then(pre_upgrade_script => {
             fs.writeFile(PRE_UPGRADE_SCRIPT_FILE_PATH, pre_upgrade_script, err => {
               if (err)
